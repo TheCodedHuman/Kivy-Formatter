@@ -1,6 +1,9 @@
 # Version files
 .vscode/
 
+# Cache
+__pycache__/
+
 # MisX
 dump.txt
 structure.txt
