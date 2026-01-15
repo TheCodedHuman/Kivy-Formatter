@@ -1,0 +1,85 @@
+/*--------------------------------- GLOBAL --------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+RO:wght@100..400&family=Tilt+Warp&display=swap');
+/* font-family: "Tilt Warp", sans-serif; */
+/* font-family: "Playwrite RO", cursive; */
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: consolas;
+    box-sizing: border-box;
+    /* border: 0.2px solid grey; */
+}
+
+
+/*--------------------------------- IDs --------------------------------- */
+
+.logo {
+    color: black;
+    font-weight: 200;
+    font-size: 2rem;
+    font-family: "Tilt Warp", sans-serif; 
+}
+
+/*--------------------------------- SEMANTICS --------------------------------- */
+
+body {
+    background-color: #333;
+}
+
+header, footer {
+    position: relative;
+    padding: 1rem 3rem;
+    background-image: url("../Assets/header_bg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+header>* {
+    position: relative;
+    z-index: 2;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.8));
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+/*--------------------------------- FOOTER --------------------------------- */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.8));
+}
+
+footer > h1 {
+    font-family: "Playwrite RO", cursive;
+    font-weight: 900;
+    font-size: 1.25rem;
+}
+
+nav {
+    font-size: 2.25rem;
+    background-color: #666;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.8rem;
+}
+
+.social {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+nav.social i {
+    display: block;
+}
