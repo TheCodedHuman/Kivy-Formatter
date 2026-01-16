@@ -38,7 +38,7 @@ header {
     flex-shrink: 0;
     position: relative;
     padding: 0.75rem 3rem;
-    background-image: url("/Frontend/Assets/header_bg.jpg");
+    background-image: url("https://res.cloudinary.com/dbjhbabjd/image/upload/v1768586947/header_bg_lq6flp.jpg");
     background-size: cover;
     background-position: center;
 }
