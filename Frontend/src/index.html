@@ -21,16 +21,14 @@
 
     <main>
         <div class="left-container">
-            <label for="editor">Paste Text Here</label>
+            <label for="editor-text">Paste Text Here</label>
 
             <section class="editor">
                 <textarea id="gutter" readonly>1</textarea>
                 <textarea name="raw_code" id="editor-text" wrap="off" spellcheck="false"></textarea>
             </section>
 
-            <form method="POST" action="/format">
-                <button type="submit">Do Magic!</button>
-            </form>
+            <button id="magic-btn" type="button">Do Magic!</button>
         </div>
 
         <section class="right-container">

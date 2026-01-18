@@ -143,6 +143,7 @@ main {
     flex-direction: column;
     width: 50vw;
     min-width: 300px;
+    overflow: hidden;
 }
 
 /*---------------- label ----------------*/
@@ -156,12 +157,7 @@ main label {
 }
 
 /*---------------- button ----------------*/
-form {
-    display: flex;
-    justify-content: center;
-}
-
-form button {
+button {
     align-self: center;
     background-color: #444;
     font-family: "Rakkas", serif;
@@ -174,13 +170,12 @@ form button {
     margin-top: 1rem;
 }
 
-form button:hover {
+button:hover {
     background-color: #666;
     color: white;
     scale: 1.1;
     box-shadow: 0 10px 5px 2px #222;
 }
-
 
 
 /*---------------- Editor ----------------*/
@@ -207,8 +202,6 @@ form button:hover {
     line-height: 1.5rem;
 }
 
-
-
 #gutter {
     border: none;
     resize: none;
@@ -230,7 +223,7 @@ form button:hover {
 }
 
 
-
+/*--------------------------------- Media Queries --------------------------------- */
 @media screen and (max-width: 768px) {
   main, footer {
     flex-direction: column;
