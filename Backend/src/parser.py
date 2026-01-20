@@ -1,60 +1,50 @@
-import json         # helps just to load, and not to dump, as app will handle that
-from typing import Any
+from utils import calc_indent, is_widget, parse_datatype
 
 class KVParser:
     def __init__(self, raw_code: str):
-        self.lines = raw_code.splitlines()
-        self.root: dict[str, Any] = {}      # this will return
-        self.stack: list[tuple[int, dict[str, Any]]] = [(0, self.root)]       # (indent_level, current_dict)    
+        self.lines = raw_code.splitlines()          # Approach used -> Context Map: Indent Level -> The LIST that belongs to that level
+        self.root_structure = []                    # We start with a root list that holds the main layout
+        self.context = {-1: self.root_structure}    # We initialize it pointing to our root structure
 
-
-    def parse_kivy(self) -> dict[str, dict]:
-        """this is the main function that returns json ultimately to frontend"""
+    def parse_kivy(self):
         for line in self.lines:
-            if not line.strip(): continue           # if empty line
+            if not line.strip(): continue
 
-            indent = self.count_indent(line)
-            key_val: list[str] = line.strip().split(":",maxsplit=1)     # 2 strings will come for eg, ['BoxLayout', '']
+            indent = calc_indent(line)
+            content = line.strip()
 
-            if len(key_val) == 1:                           # BoxLayout: will come (basically widgets having nothing after ':' symbol)
-                key: str = key_val[0].strip()
-                node = {}
+            parent_indent = -1                              # Find my Parent's List
+            for lvl in sorted(self.context.keys()):         # We look for the closest indent level smaller than the current one
+                if lvl < indent:
+                    parent_indent = lvl
+                else:
+                    break
+            
+            parent_list = self.context[parent_indent]            # This is the list we will either ADD a child to, or UPDATE props in
 
-                # attach to correct parent
-                while self.stack and self.stack[-1][0] >= indent:
-                    self.stack.pop()
-                self.stack[-1][1][key] = node
-                self.stack.append((indent, node))
+            # Logic Split: Is it a Widget or a Property?
+            if is_widget(content):
+                widget_name = content[:-1]                          # Remove colon
+                new_widget_list = [{"props": {}}]                   # Initialize the new widget structure: Index 0 is ALWAYS the properties dictionary
+
+                widget_obj = {widget_name: new_widget_list}         # Create the object wrapper { "BoxLayout": [...] }
+                parent_list.append(widget_obj)                      # Append this new widget to the parent's list (as a child)
+
+                # Update Context:
+                self.context[indent] = new_widget_list              # "Any future lines at this indent (or deeper) belong to THIS widget's list"
+
+                keys_to_del = [k for k in self.context if k > indent]
+                for k in keys_to_del: del self.context[k]           # Cleanup: Remove deeper indents so they don't mess up future blocks
 
             else:
-                key, val = key_val      # both content of key_val will get distributed to key and value
-                self.stack[-1][1][key.strip()] = self.parse_datatype(val.strip())
+                if ":" in content:
+                    key, val = content.split(":", 1)
+                    parsed_val = parse_datatype(val)
 
-        return { "raw_text": self.root }
+                    # IMPORTANT: We don't append properties to the list!
+                    # We find the 'props' dictionary (Index 0) and update it.
+                    parent_list[0]["props"][key.strip()] = parsed_val
 
-
-    def count_indent(self, line: str) -> int:
-        """Counts leading spaces to determine nesting level from the 'line' it recieves"""
-        return len(line) - len(line.lstrip())
+        return {"parsed_code": self.root_structure[0] if self.root_structure else {}}
     
-
-    def parse_datatype(self, val: str) -> Any:  # by default everything is string in raw_code
-        """Try to coerce into int, float, list, dict, else string."""
-
-        if val.isdigit(): return int(val)       # Integer
-
-        try: return float(val)                  # Float
-        except ValueError: pass
-
-        if "," in val:
-            return [self.parse_datatype(v.strip()) for v in val.split(",")]      # returns tuple values like height: (30, 20)
-        
-        if val.startswith("{") and val.endswith("}"):
-            try:
-                json.loads(val.replace("'", '"'))
-            except Exception:
-                return val
-        
-        return val.strip("'\"")     # ' → is only there, else is just escape sequence 
-        
     

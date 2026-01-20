@@ -4,7 +4,7 @@
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from parser import KVParser
-from utils import validate_kv, how_many_lines
+from utils import validate_kv
 
 # Literals
 app = FastAPI()
@@ -22,15 +22,11 @@ app.add_middleware(
 # Routes
 @app.post("/format")
 async def format_text(raw_code: str = Form(...)):
-    isInputCorrect = validate_kv(raw_code)
+    isInputCorrect: bool = validate_kv(raw_code)
     if not isInputCorrect:
         raise HTTPException(status_code=422, detail="Invalid KV syntax")
 
     parser_util = KVParser(raw_code)
     formatted = parser_util.parse_kivy()
-    return { "parsed_json": formatted }
+    return formatted
 
-
-@app.post("/stats")
-async def stats(raw_code: str = Form(...)):
-    return {"lines": how_many_lines(raw_code)}
