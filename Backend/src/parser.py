@@ -45,6 +45,14 @@ class KVParser:
                     # We find the 'props' dictionary (Index 0) and update it.
                     parent_list[0]["props"][key.strip()] = parsed_val
 
-        return {"parsed_code": self.root_structure[:] if self.root_structure else {}}
+        # return {"parsed_code": self.root_structure[:] if self.root_structure else {}}
+        # OLD: return {"parsed_code": self.root_structure[:] ... }
+
+        # NEW: Merge list of dicts into one big dict
+        # Turns [{"<A>":...}, {"<B>":...}] into {"<A>":..., "<B>":...}
+        merged_root = {k: v for item in self.root_structure for k, v in item.items()}
+        
+        return {"parsed_code": merged_root}
     
     
+
