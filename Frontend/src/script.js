@@ -44,14 +44,14 @@ updateGutter();         // first time rendering
 document.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("magic-btn");
     const editor = document.getElementById("editor-text");
-    const output = document.getElementById("formatted-code");
+    const output = document.getElementById("formatted-output");
 
     button.addEventListener("click", async () => {
         const rawCode = editor.value;
 
         try {
             const response = await fetch("http://localhost:8000/format", {
-                method: "POST",w
+                method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
@@ -59,10 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const data = await response.json();
-            output.textContent = data.formatted_code;
+            window.data = data;
+            render()
         } catch (error) {
             console.error("Error:", error);
-            output.textContent = "Something went wrong :(";
+            output.textContent = "Something went wrong :( (Fronend Side)";
         }
 
     })
