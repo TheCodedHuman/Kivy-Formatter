@@ -1,9 +1,8 @@
 # utils.py
 from kivy.lang.parser import Parser, ParserException
 from typing import Any
-import re
 
-# --- VALIDATION ---
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Validation ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def validate_kv(text: str) -> bool:
     try:
         Parser(content=text)
@@ -20,7 +19,7 @@ def validate_kv(text: str) -> bool:
         print(f"Error: {e}")
         return False
 
-# --- PREPROCESSING ---
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PreProcessing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def preprocess(text: str) -> list[str]:
     lines = text.splitlines()
     safe_lines = []

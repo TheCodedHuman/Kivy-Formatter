@@ -27,6 +27,6 @@ async def format_text(raw_code: str = Form(...)):
         raise HTTPException(status_code=422, detail="Invalid KV syntax")
 
     parser_util = KVParser(raw_code)
-    formatted = parser_util.parse_kivy()
-    return formatted
+    formatted: dict = parser_util.parse_kivy()
+    return formatted        # FastAPI JSONizes the response
 
