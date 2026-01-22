@@ -20,6 +20,16 @@ window.toggle = function(nodePath) {
     render();
 };
 
+function escapeHtml(text) {
+    if (!text) return text;
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+};
+
 
 // Recursive renderer
 function renderNode(label, value, depth = 0, path = "") {
@@ -30,11 +40,16 @@ function renderNode(label, value, depth = 0, path = "") {
     const isArray = Array.isArray(value);
     const isObject = typeof value === "object" && value !== null && !isArray;
 
+    // --- HIDE EMPTY PROPS ---
+    if (label === "props" && isObject && Object.keys(value).length === 0) {
+        return "";
+    }
+
     // If it's a primitive (string/number/null), just show it
     if (!isArray && !isObject) {
         return `
-        <div class="node-row" style="padding-left: ${depth * 20}px">
-            <span class="key">${label}:</span> 
+        <div class="node-row" style="padding-left: ${depth * 70}px">
+            <span class="key">${label}: </span> 
             <span class="value type-${typeof value}">${value}</span>
         </div>`;
     }
@@ -47,10 +62,10 @@ function renderNode(label, value, depth = 0, path = "") {
     let html = `
     <div class="node-wrapper">
         <div class="node-row hover-effect" 
-             style="padding-left: ${depth * 30}px" 
+             style="padding-left: ${depth * 70}px" 
              onclick="toggle('${nodePath}')">
             <span class="toggle-icon">${icon}</span>
-            <strong class="${labelClass}">${label}</strong>
+            <strong class="${labelClass}">${escapeHtml(label)}</strong>
         </div>
     `;
 

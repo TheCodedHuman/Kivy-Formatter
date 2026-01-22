@@ -110,8 +110,14 @@ nav {
 
 nav i {
     display: block;
-    fill: black;
+    color: black;
     position: relative;
+}
+
+nav i:hover {
+    color: white;
+    scale: 1.2;
+    transition: all 0.35s ease-in-out;
 }
 
 nav i::after {

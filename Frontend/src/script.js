@@ -50,7 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const rawCode = editor.value;
 
         try {
-            const response = await fetch("http://localhost:8000/format", {
+            // const response = await fetch("http://127.0.0.1:8000/format", {                   // dev
+            const response = await fetch("https://kivy-formatter.onrender.com/format", {        // prod
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"

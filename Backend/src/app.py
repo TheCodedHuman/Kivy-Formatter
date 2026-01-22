@@ -13,8 +13,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=["*"],      # dev
-    # allow_origins=["https://kivy-formatter-8veg.vercel.app"],    # prod
+    # allow_origins=["*"],      # dev
+    allow_origins=["https://kivy-formatter-8veg.vercel.app"],    # prod
     allow_methods=['*'],
     allow_headers=['*'],
 )
