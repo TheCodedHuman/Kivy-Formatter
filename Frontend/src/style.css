@@ -185,7 +185,6 @@ main {
     min-width: 300px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-
 }
 
 /*---------------- label ----------------*/
@@ -253,6 +252,7 @@ button:hover {
     overflow: auto;
     resize: none;
     color: white;
+    background-color: #444;
     font-size: 1.15rem;
     line-height: 1.5rem;
 }
@@ -270,12 +270,11 @@ button:hover {
     line-height: 1.5rem;
     user-select: none;
     flex: none;
-    width: 3rem;        /* default width */
+    width: 3rem;
     white-space: pre;
     outline: none;
-
+    vertical-align: top;     /* Forces text to stick to the top */
 }
-
 
 /*--------------------------------- TreeView --------------------------------- */
 .node-wrapper {
@@ -377,6 +376,33 @@ button:hover {
     margin: 0;
 }
     
+
+/*---------------- Custom Scrollbar ----------------*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; 
+    margin: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 99px;
+    border: 3px solid #444; /* Creates the padding effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+    border-color: #444;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
 
 /*--------------------------------- Media Queries --------------------------------- */
 @media screen and (max-width: 768px) {
