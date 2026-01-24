@@ -314,6 +314,7 @@ button:hover {
 .gear-icon {
     font-size: 1.2rem;  
     vertical-align: middle; 
+    margin-right: 8px;
     margin-top: -4px;           /* micro-adjustment */
     opacity: 0.8;               /* micro-adjustment */
 }

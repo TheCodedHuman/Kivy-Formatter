@@ -82,7 +82,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: new URLSearchParams({ raw_code: rawCode })
             });
 
-            if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+            // --- IMPROVED ERROR HANDLING ---
+            if (!response.ok) {
+                // Check if it is a Syntax Error (422)
+                if (response.status === 422) {
+                    throw new Error("Invalid Kivy Syntax. Please check your code.");
+                }
+
+                // Check if Server is asleep/down (500, 502, 503)
+                if (response.status >= 500) {
+                    throw new Error("Server is sleeping or down. Try again in 1 min.");
+                }
+
+                // Generic fallback
+                throw new Error(`Server Error: ${response.status}`);
+            }
+            // -------------------------------
 
             const data = await response.json();
             window.data = data;
@@ -101,10 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             output.innerHTML = `<div class="error-msg">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <h3>Something went wrong :(</h3>
-                    <p>Frontend Side</p>
-                    <small>${error.message}</small>
+                    <h3>Parsing Failed</h3>
+                    <p style="opacity: 0.7; margin-bottom: 0.5rem">The Formatter could not read your code.</p>
+                    <small style="color: #ff6b6b; border: 1px solid #ff4757; padding: 0.5rem; border-radius: 0.5rem; background: rgba(255, 71, 87, 0.1);">
+                        ${error.message}
+                    </small>
                 </div>`;
         }
     })
 });
+
