@@ -51,7 +51,7 @@ def parse_datatype(val: str) -> Any:
     try: return float(val)
     except ValueError: pass
     
-    if "[" in val or "," in val:                                                # Lists/Tuples
+    if "[" in val:                                                # Lists/Tuples
         clean = val.replace("[", "").replace("]", "")
         return [parse_datatype(v) for v in clean.split(",") if v.strip()]       # Recursively parse items in list
         
