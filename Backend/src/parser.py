@@ -9,6 +9,7 @@ class KVParser:
     def parse_kivy(self):
         for line in self.lines:
             if not line.strip(): continue
+            if line.strip().startswith("#"): continue
 
             indent = calc_indent(line)
             content = line.strip()
