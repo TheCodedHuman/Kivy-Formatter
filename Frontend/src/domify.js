@@ -55,43 +55,40 @@ function renderNode(label, value, depth = 0, path = "") {
     }
 
     // --- RENDER PARENT NODE ---
-    // If it's "props", we might want a different icon, e.g., ⚙️
-    const icon = label === "props" ? "⚙️" : (isOpen ? "▾" : "▸");
-    const labelClass = label === "props" ? "props-label" : "widget-label";
+    const isProps = label === "props";  // Helper boolean
+
+    // 1. Choose Icon
+    const icon = isProps ? "⚙️" : (isOpen ? "▾" : "▸");
+
+    // 2. Choose Label Class
+    const labelClass = isProps ? "props-label" : "widget-label";
+
+    // 3. NEW: Choose Icon Class (Add 'gear-icon' only for props)
+    const iconClass = isProps ? "toggle-icon gear-icon" : "toggle-icon";
 
     let html = `
     <div class="node-wrapper">
         <div class="node-row hover-effect" 
              style="padding-left: ${depth * 70}px" 
              onclick="toggle('${nodePath}')">
-            <span class="toggle-icon">${icon}</span>
+             
+            <span class="${iconClass}">${icon}</span>
+            
             <strong class="${labelClass}">${escapeHtml(label)}</strong>
         </div>
     `;
 
-    // --- RENDER CHILDREN (If Open) ---
+    // ... rest of the function remains the same ...
     if (isOpen) {
         if (isArray) {
-            // SPECIAL HANDLING FOR KIVY LISTS
-            // The list contains objects like [{props}, {Child1}, {Child2}]
-            // We iterate the list, but we don't render the INDEX. 
-            // We dig inside the object to find the Key.
-
             value.forEach((item, index) => {
                 if (typeof item === "object" && item !== null) {
-                    // Each item in your Kivy JSON is a dict with ONE key 
-                    // e.g. { "Button": [...] } or { "props": {...} }
                     const [childKey, childVal] = Object.entries(item)[0];
-
-                    // Generate a unique path for array items so toggling works
                     const arrayItemPath = `${nodePath}[${index}]`;
-
                     html += renderNode(childKey, childVal, depth + 1, arrayItemPath);
                 }
             });
-
         } else {
-            // STANDARD OBJECT HANDLING (like inside "props")
             for (const [key, val] of Object.entries(value)) {
                 html += renderNode(key, val, depth + 1, nodePath);
             }
@@ -101,4 +98,3 @@ function renderNode(label, value, depth = 0, path = "") {
     html += `</div>`;
     return html;
 };
-
