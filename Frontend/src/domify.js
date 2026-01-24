@@ -35,6 +35,7 @@ function escapeHtml(text) {
 function renderNode(label, value, depth = 0, path = "") {
     const nodePath = path ? `${path}/${label}` : label;
     const isOpen = state[nodePath] || false; // Default closed
+    const indentStep = window.innerWidth < 768 ? 20 : 70;
 
     // --- TYPE CHECKING ---
     const isArray = Array.isArray(value);
@@ -48,28 +49,22 @@ function renderNode(label, value, depth = 0, path = "") {
     // If it's a primitive (string/number/null), just show it
     if (!isArray && !isObject) {
         return `
-        <div class="node-row" style="padding-left: ${depth * 70}px">
+        <div class="node-row" style="padding-left: ${depth * indentStep}px">
             <span class="key">${label}: </span> 
             <span class="value type-${typeof value}">${value}</span>
         </div>`;
     }
 
     // --- RENDER PARENT NODE ---
-    const isProps = label === "props";  // Helper boolean
-
-    // 1. Choose Icon
-    const icon = isProps ? "⚙️" : (isOpen ? "▾" : "▸");
-
-    // 2. Choose Label Class
-    const labelClass = isProps ? "props-label" : "widget-label";
-
-    // 3. NEW: Choose Icon Class (Add 'gear-icon' only for props)
-    const iconClass = isProps ? "toggle-icon gear-icon" : "toggle-icon";
+    const isProps = label === "props";                                          // Helper boolean
+    const icon = isProps ? "⚙️" : (isOpen ? "▾" : "▸");                         // Choose Icon
+    const labelClass = isProps ? "props-label" : "widget-label";                // Choose Label Class
+    const iconClass = isProps ? "toggle-icon gear-icon" : "toggle-icon";        // Choose Icon Class (Add 'gear-icon' only for props)
 
     let html = `
     <div class="node-wrapper">
         <div class="node-row hover-effect" 
-             style="padding-left: ${depth * 70}px" 
+             style="padding-left: ${depth * indentStep}px" 
              onclick="toggle('${nodePath}')">
              
             <span class="${iconClass}">${icon}</span>
@@ -78,7 +73,6 @@ function renderNode(label, value, depth = 0, path = "") {
         </div>
     `;
 
-    // ... rest of the function remains the same ...
     if (isOpen) {
         if (isArray) {
             value.forEach((item, index) => {

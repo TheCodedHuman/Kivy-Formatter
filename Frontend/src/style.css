@@ -296,6 +296,8 @@ button:hover {
     padding: 4px 0;
     transition: background 0.1s;
     user-select: none;
+    white-space: nowrap;
+    min-width: max-content;
 }
 
 .node-row.hover-effect:hover {
