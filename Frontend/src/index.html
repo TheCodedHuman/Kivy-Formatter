@@ -8,6 +8,7 @@
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <title>Kivy Formatter</title>
 </head>
 
@@ -18,18 +19,18 @@
 
     <main>
         <div class="left-container">
-            <label for="editor-text">Paste Text Here</label>
+            <label for="editor-text">Enter KV Code</label>
 
             <section class="editor">
                 <textarea id="gutter" readonly>1</textarea>
-                <textarea name="raw_code" id="editor-text" wrap="off" spellcheck="false"></textarea>
+                <textarea name="raw_code" id="editor-text" wrap="off" spellcheck="false" placeholder="Format and visualize KV code instantly!"></textarea>
             </section>
 
             <button id="magic-btn" type="button">Do Magic!</button>
         </div>
 
         <section class="right-container">
-            <label for="formatted-code">Formatted Code</label>
+            <label for="formatted-code">Parsed TreeView</label>
             <section id="formatted-code" tabindex="0">
                 <div id="formatted-output">
                     <div class="placeholder-msg">
