@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-gunicorn
-python-multipart
-kivy==2.3.1
-requests
